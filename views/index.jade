@@ -1,0 +1,90 @@
+extends layout
+
+block content
+  #hud
+    #hud-left
+      #hud-left-top
+        .valuepair#lvl
+          .label LVL
+          .value.ch2
+            .value-bg 00
+            .value-actual 0
+        .valuepair#gol
+          .label $
+          .value.ch10
+            .value-bg 0000000000
+            .value-actual 0
+        .valuepair#prm
+          .label PRM
+          .value.ch4
+            .value-bg 0000
+            .value-actual 0
+        .valuepair#key
+          .label KEY
+          .value.ch2
+            .value-bg 00
+            .value-actual 0
+        //
+          .valuepair#tim
+            .label TIM
+            .value.ch8
+              .value-bg 00000000
+              .value-actual 00:00:00
+      #hud-left-left
+        .valuepair#exp
+          .bar-container.cap-EXP
+            .bar.color-EXP
+          .label EXP
+          .value.ch10
+            .value-bg 0000000000
+            .value-actual#exp-value 0
+        .valuepair#lif
+          .bar-container.cap-LIF
+            .bar.color-LIF
+          .label LIF
+          .value.ch10
+            .value-bg 0000000000
+            .value-actual 0
+        .valuepair#act
+          .bar-container.cap-ACT
+            .bar.color-ACT
+          .label ACT
+          .value.ch10
+            .value-bg 0000000000
+            .value-actual
+              .maximum 5
+              .slash /
+              .current 5
+      #hud-left-right
+        .valuepair#atk
+          //.upgrade#upgrade-atk +
+          .bar-container.cap-ATK
+            .bar.color-ATK
+          .label ATK
+          .value.ch8
+            .value-bg 00000000
+            .value-actual 1
+        .valuepair#def
+          //.upgrade#upgrade-def +
+          .bar-container.cap-DEF
+            .bar.color-DEF
+          .label DEF
+          .value.ch8
+            .value-bg 00000000
+            .value-actual 1
+        .valuepair#rcv
+          //.upgrade#upgrade-rcv +
+          .bar-container.cap-RCV
+            .bar.color-RCV
+          .label RCV
+          .value.ch8
+            .value-bg 00000000
+            .value-actual 1
+    #console
+      .console-entry
+        .timestamp 00:00:00
+        .message PLR >>> 00000000 --> ENM
+      .console-entry
+        .timestamp 00:00:00
+        .message PLR <-- 00000000 <<< ENM
+  #board

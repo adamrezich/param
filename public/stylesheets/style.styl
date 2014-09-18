@@ -1,0 +1,271 @@
+*
+  cursor: default
+
+body
+  font: 18px 'Inconsolata', 'Consolas', monospace
+  background: #111
+  color: #ddd
+  text-align: center
+
+body *
+  text-align: left
+
+a
+  color: #00B7FF
+
+.ch1
+  width: 1ch
+.ch2
+  width: 2ch
+.ch3
+  width: 3ch
+.ch4
+  width: 4ch
+.ch5
+  width: 5ch
+.ch6
+  width: 6ch
+.ch7
+  width: 7ch
+.ch8
+  width: 8ch
+.ch9
+  width: 9ch
+.ch10
+  width: 10ch
+.ch11
+  width: 11ch
+.ch12
+  width: 12ch
+.ch13
+  width: 13ch
+.ch14
+  width: 14ch
+
+.color-EXP
+  background: #144
+.cap-EXP
+  border-left: 1px solid #144
+  border-right: 1px solid #144
+  box-sizing: border-box
+.color-LIF
+  background: #141
+.cap-LIF
+  border-left: 1px solid #141
+  border-right: 1px solid #141
+  box-sizing: border-box
+.color-ACT
+  background: #414
+.cap-ACT
+  border-left: 1px solid #414
+  border-right: 1px solid #414
+  box-sizing: border-box
+.color-ATK
+  background: #411
+.cap-ATK
+  border-left: 1px solid #411
+  border-right: 1px solid #411
+  box-sizing: border-box
+.color-DEF
+  background: #114
+.cap-DEF
+  border-left: 1px solid #114
+  border-right: 1px solid #114
+  box-sizing: border-box
+.color-RCV
+  background: #441
+.cap-RCV
+  border-left: 1px solid #441
+  border-right: 1px solid #441
+  box-sizing: border-box
+
+#hud
+  position: relative
+  margin: 8px auto
+  height: 0
+  width: 114ch
+  /*padding: 8px 0*/
+  overflow: hidden
+  opacity: 0
+
+#hud-left
+  position: absolute
+  top: 0
+  left: 0
+  width: 70ch
+  height: 100%
+
+#hud-left-top
+  height: 1em
+  overflow: hidden
+
+#hud-left-top > .valuepair
+  display: inline
+  margin-right: 4ch
+  float: left
+
+#hud-left-left
+  position: absolute
+  top: 1em
+  left: 0
+
+#hud-left-right
+  position: absolute
+  top: 1em
+  left: 31ch
+  width: 0
+
+#key, #tim, #act, #lif, #prm
+  /*overflow: hidden*/
+  opacity: 0
+  
+#hud-left-left > .valuepair, #hud-left-right > .valuepair
+  display: block
+  margin-right: 2ch
+  
+
+.valuepair
+  height: 1em
+  position: relative
+
+.valuepair > *
+  float: left
+  overflow: visible
+
+.label
+  color: #888
+
+.value
+  display: block
+  position: relative
+
+.value-bg
+  color: #5b5b5b
+  opacity: 0.33
+  position: absolute
+  top: 0
+  left: 0
+
+.value-actual
+  position: absolute
+  text-align: right
+  top: 0
+  right: 0
+  width: 100%
+  color: #bbb
+
+.value-actual > *
+  float: right
+
+.valuepair > .bar-container
+  position: absolute
+  top: 0.25em
+  left: 3ch
+  height: 0.5em
+  width: 25ch
+
+.valuepair > .bar-container > .bar
+  width: 0
+  height: 100%
+
+.valuepair > .upgrade
+  cursor: pointer
+  float: none
+  position: absolute
+  width: 4ch
+  height: 1em
+  left: -1ch
+  top: 0
+  text-align: left
+  color: #fff
+  background: green
+  opacity: 0.35
+
+#console
+  position: absolute
+  top: 0
+  right: 0
+  width: 0 /* 40ch */
+
+.console-entry
+  height: 1em
+
+.console-entry > *
+  float: left
+.console-entry > .timestamp
+  color: #666
+  width: 9ch
+.console-entry > .message
+  color: #bbb
+
+
+#board
+  position: relative
+  display: inline-block
+  /*background: #1c1c1c url('../images/board.png')*/
+  width: 1036px
+  height: 796px
+
+.block
+  box-sizing: border-box
+  border: 1px solid #1c1c1c
+  background: #151515
+  position: absolute
+  font-size: 12px
+
+.block, .block *
+  cursor: pointer
+
+.block.inactive, .block.inactive *
+  cursor: default
+
+.block .label
+  position: absolute
+  top: 2px
+  left: 4px
+  opacity: 0
+
+.block .label > *
+  float: left
+
+.block .label .value
+  color: #ddd
+
+.block .label .percent
+  color: #aaa
+
+.block > .value, .block > .width, .block > .height
+  display: none
+
+.block .progress
+  position: absolute
+  top: 0
+  left: 0
+  width: 0%
+  height: 100%
+  background-color: #334433
+
+.test1
+  width: 36px
+  height: 36px
+  top: 0
+  left: 0
+
+.test2
+  width: 76px
+  height: 36px
+  top: 0
+  left: 40px
+
+.test3
+  width: 76px
+  height: 36px
+  top: 40px
+  left: 0
+
+.test4
+  width: 36px
+  height: 112px
+  top: 80px
+  left: 40px
+
