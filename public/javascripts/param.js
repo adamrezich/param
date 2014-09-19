@@ -7,6 +7,59 @@
   };
 })(jQuery);
 
+
+var user = {
+  stats: {},
+  lastStatsFetch: Date.now()
+};
+
+var board = {
+  blocks: [],
+  block_count: 0,
+  addBlock: function(data) {
+    $('#board').append('<div id="block_' + data.id + '" class="block inactive" style="left: ' + (data.pos.x * 40) + 'px; top: ' + (data.pos.y * 40) + 'px; width: ' + (data.dims.x * 36 + Math.max(0, data.dims.x - 1) * 4) + 'px; height: ' + (data.dims.y * 36 + Math.max(0, data.dims.y - 1) * 4) + 'px;"><div class="progress"></div><div class="label"><div class="value">0</div><div class="percent">%</div></div><div class="value">0</div><div class="width">' + data.dims.x + '</div><div class="height">' + data.dims.y + '</div></div>');
+    if (data.active)
+      board.enableBlock(data.id);
+  },
+  enableBlock: function(id) {
+    console.log('enabling ' + id);
+    var fadeInTime = 500;
+    $('#block_' + id).animate({
+      borderColor: '#888',
+      backgroundColor: '#222'
+    },
+    fadeInTime,
+    'easeOutCirc'
+    );
+    $('#block_' + id).find('> .label').animate({
+      opacity: '1.0'
+    },
+    fadeInTime,
+    'easeOutQuint',
+    function() {
+      $('#block_' + id).removeClass('inactive');
+    });
+  }
+};
+
+var socket = io.connect();
+socket.emit('ready');
+
+socket.on('stats', function(data) {
+  stats = data;
+  console.log(stats);
+});
+
+socket.on('add-block', function(data) {
+  board.addBlock(data);
+  console.log(data);
+});
+
+
+
+
+
+/*
 var rcv_interval;
 var rcv_timeout;
 
@@ -110,12 +163,6 @@ function give_exp(exp) {
   if (overrun) {
     highlight('#lvl > .value > .value-actual');
     $('#lvl > .value > .value-actual').text(stats.lvl);
-    /*$('#lvl > .value > .value-actual').countTo({
-      from: prevLevel,
-      to: stats.lvl,
-      speed: 250,
-      refreshInterval: 50
-    });*/
     $('#exp > .bar-container > .bar').stop().animate({
       width: 0
     },
@@ -215,12 +262,6 @@ function show_exp_gold() {
   1000,
   'easeOutQuint',
   function() {
-    /*$('#hud-left-top').animate({
-      height: '1em'
-    },
-    1000,
-    'easeOutCirc'
-    );*/
   });
 }
 
@@ -326,8 +367,6 @@ $( document ).ready(function() {
       return;
     var cur = parseInt($(this).find('> .value').text(), 10);
     var prev = cur;
-    /*if (cur == 100)
-      return;*/
     if (!state.shown_exp_gold) {
       show_exp_gold();
     }
@@ -378,9 +417,7 @@ $( document ).ready(function() {
     highlight($(this).find('> .label > .value'), '#fff', $(this).find('> .value').text() == '100' ? '#ddd' : '#bbb');
     
     
-    //cur = Math.min(cur + add, 100);
     $(this).find('> .value').text(cur);
-    //$(this).find('> .label > .value').text(cur);
     $(this).find('> .label > .value').countTo({
       from: prev,
       to: cur,
@@ -426,5 +463,5 @@ $( document ).ready(function() {
     'easeOutQuint'
     );
   });
-  
 });
+*/
