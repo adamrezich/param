@@ -58,6 +58,19 @@ app.io.route('get-stats', function(req) {
   req.io.emit('stats', req.session.user.stats);
 });
 
+app.io.route('click-block', function(req) {
+  if (!req.session || !req.session.user)
+    return;
+  if (req.session.user.board.blocks.indexOf(req.data)) {
+    req.session.user.board.blocks[req.data].click(req.session.user);
+    req.io.emit('click-block',
+    {
+      block: req.session.user.board.blocks[req.data],
+      stats: req.session.user.stats
+    });
+  }
+});
+
 
 
 

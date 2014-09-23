@@ -7,6 +7,23 @@
   };
 })(jQuery);
 
+function highlight(id, bright, dim) {
+  var bright_ = bright ? bright : '#fff';
+  var dim_ = dim ? dim : '#bbb';
+  $(id).stop().animate({
+    //textShadow: '#fff 4px 4px 10px',
+    color: bright_
+  },
+  50,
+  'easeInQuint').animate({
+    //textShadow: '#000 0 0 0',
+    color: dim_
+  },
+  500,
+  'easeInCubic');
+}
+
+var socket = io.connect();
 
 var user = {
   stats: {},
@@ -15,14 +32,96 @@ var user = {
 
 var board = {
   blocks: [],
-  block_count: 0,
   addBlock: function(data) {
-    $('#board').append('<div id="block_' + data.id + '" class="block inactive" style="left: ' + (data.pos.x * 40) + 'px; top: ' + (data.pos.y * 40) + 'px; width: ' + (data.dims.x * 36 + Math.max(0, data.dims.x - 1) * 4) + 'px; height: ' + (data.dims.y * 36 + Math.max(0, data.dims.y - 1) * 4) + 'px;"><div class="progress"></div><div class="label"><div class="value">0</div><div class="percent">%</div></div><div class="value">0</div><div class="width">' + data.dims.x + '</div><div class="height">' + data.dims.y + '</div></div>');
+    board.blocks.push(data);
+    $('#board').append('<div id="block_' + data.id + '" class="block inactive" style="left: ' + (data.pos.x * 40) + 'px; top: ' + (data.pos.y * 40) + 'px; width: ' + (data.dims.x * 36 + Math.max(0, data.dims.x - 1) * 4) + 'px; height: ' + (data.dims.y * 36 + Math.max(0, data.dims.y - 1) * 4) + 'px;"><div class="progress"></div><div class="label"><div class="value">0</div><div class="percent">%</div></div>');
     if (data.active)
       board.enableBlock(data.id);
+    $('#block_' + data.id).click(function() {
+      var id = $(this).attr('id').split('_')[1];
+      socket.emit('click-block', id);
+    });
+  },
+  clickBlock: function(data) {
+    if (!data)
+      return;
+    var prev = board.blocks[data.id].progress;
+    board.blocks[data.id] = data;
+    var cur = data.progress;
+    highlight($('#block_' + data.id + ' > .label > .value'), '#fff', cur == 100 ? '#ddd' : '#bbb');
+    
+    $('#block_' + data.id + ' > .label > .value').countTo({
+      from: prev,
+      to: cur,
+      speed: 200,
+      refreshInterval: 50
+    });
+    $('#block_' + data.id).find('.progress').stop().animate({
+      width: cur.toString() + '%'
+    },
+    250,
+    'easeOutQuint',
+    function() {
+      var id = $(this).parent().attr('id').split('_')[1];
+      var data = board.blocks[id];
+      if (data.progress == 100) {
+        $(this).animate({
+          backgroundColor: '#333'
+        },
+        250,
+        'easeOutQuint',
+        function() {
+        });
+      }
+    });
+    
+    /*var data = board.blocks[id];
+    var w = data.dims.x;
+    var h = data.dims.y;
+    
+    if ($(this).hasClass('inactive') || stats.act < w * h)
+      return;
+    var cur = data.progress;
+    var prev = cur;
+    
+    var prog_total = 10 * w * h;
+    var prog_current = w * h * cur / 10;
+    var hit = 2;
+    prog_current += hit;
+    cur = Math.min(prog_current / prog_total * 100, 100);
+    
+    board.blocks[id].progress = cur;
+    
+    var lvl_prev = stats.lvl;
+    
+    highlight($(this).find('> .label > .value'), '#fff', cur == 100 ? '#ddd' : '#bbb');
+    
+    $(this).find('> .label > .value').countTo({
+      from: prev,
+      to: cur,
+      speed: 200,
+      refreshInterval: 50
+    });
+    $(this).find('.progress').stop().animate({
+      width: cur.toString() + '%'
+    },
+    250,
+    'easeOutQuint',
+    function() {
+      var id = $(this).parent().attr('id').split('_')[1];
+      var data = board.blocks[id];
+      if (data.progress == 100) {
+        $(this).animate({
+          backgroundColor: '#333'
+        },
+        250,
+        'easeOutQuint',
+        function() {
+        });
+      }
+    });*/
   },
   enableBlock: function(id) {
-    console.log('enabling ' + id);
     var fadeInTime = 500;
     $('#block_' + id).animate({
       borderColor: '#888',
@@ -42,19 +141,25 @@ var board = {
   }
 };
 
-var socket = io.connect();
-socket.emit('ready');
-
 socket.on('stats', function(data) {
   stats = data;
-  console.log(stats);
 });
 
 socket.on('add-block', function(data) {
   board.addBlock(data);
-  console.log(data);
 });
 
+socket.on('click-block', function(data) {
+  if (data.block)
+    board.clickBlock(data.block);
+  if (data.stats)
+    stats = data.stats;
+});
+
+$(document).ready(function() {
+  socket.emit('ready');
+  $('*').disableSelection();
+});
 
 
 
