@@ -24,10 +24,11 @@ var User = function() {
 };
 
 User.prototype.addBlock = function(x, y, w, h, io, options) {
+  var id = this.board.blocks.length;
   if (options)
-    this.board.blocks.push(new Block(x, y, w, h, options));
+    this.board.blocks.push(new Block(x, y, w, h, id, options));
   else
-    this.board.blocks.push(new Block(x, y, w, h));
+    this.board.blocks.push(new Block(x, y, w, h, id));
   io.emit('add-block', this.board.blocks[this.board.blocks.length - 1]);
 }
 

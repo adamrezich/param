@@ -1,5 +1,5 @@
-var Block = function(x, y, w, h, options) {
-  this.id = 0;
+var Block = function(x, y, w, h, id, options) {
+  this.id = id;
   this.pos = { x: x, y: y };
   this.dims = { x: w, y: h };
   this.active = options && options.active ? options.active : false;

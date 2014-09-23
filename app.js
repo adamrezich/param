@@ -62,11 +62,17 @@ app.io.route('click-block', function(req) {
   if (!req.session || !req.session.user)
     return;
   if (req.session.user.board.blocks.indexOf(req.data)) {
-    req.session.user.board.blocks[req.data].click(req.session.user);
-    req.io.emit('click-block',
-    {
-      block: req.session.user.board.blocks[req.data],
-      stats: req.session.user.stats
+    var block = req.session.user.board.blocks[req.data];
+    block.click(req.session.user);
+    if (block.progress == 100 && req.session.user.board.blocks.length == block.id + 1) {
+      req.session.user.addBlock(block.pos.x + block.dims.x, 0, block.id + 2, 1, req.io, { active: true });
+    }
+    req.session.save(function() {
+      req.io.emit('click-block',
+      {
+        block: req.session.user.board.blocks[req.data],
+        stats: req.session.user.stats
+      });
     });
   }
 });

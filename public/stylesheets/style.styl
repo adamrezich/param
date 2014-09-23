@@ -1,11 +1,19 @@
 *
   cursor: default
 
+html
+  width: 100%
+  height: 100%
+  overflow: hidden
+
 body
   font: 18px 'Inconsolata', 'Consolas', monospace
   background: #111
   color: #ddd
   text-align: center
+  height: 100%
+  width: 100%
+  overflow: hidden
 
 body *
   text-align: left
@@ -80,19 +88,24 @@ a
   box-sizing: border-box
 
 #hud
-  position: relative
-  margin: 8px auto
+  position: fixed;
+  z-index: 998;
+  margin: 0 auto
   height: 0
   width: 114ch
   /*padding: 8px 0*/
   overflow: hidden
   opacity: 0
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
 
 #hud-left
   position: absolute
   top: 0
   left: 0
-  width: 70ch
+  width: 75ch
   height: 100%
 
 #hud-left-top
@@ -114,6 +127,7 @@ a
   top: 1em
   left: 31ch
   width: 0
+  opacity: 0
 
 #key, #tim, #act, #lif, #prm
   /*overflow: hidden*/
@@ -199,12 +213,24 @@ a
   color: #bbb
 
 
-#board
+#board-container
   position: relative
-  display: inline-block
   /*background: #1c1c1c url('../images/board.png')*/
-  width: 1036px
-  height: 796px
+
+  background: red
+  
+
+#board
+  margin: auto
+  width: 0
+  height: 0
+  position: fixed;
+  z-index: 999;
+  margin: auto
+  top: 0
+  right: 0
+  bottom: 0
+  left: 0
 
 .block
   box-sizing: border-box

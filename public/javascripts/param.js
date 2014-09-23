@@ -32,14 +32,61 @@ var user = {
 
 var board = {
   blocks: [],
+  dims: {
+    x: 0,
+    y: 0
+  },
+  setHudHeight: function(height) {
+    $('#board').animate({
+      top: height + 'px'
+    },
+    250,
+    'easeOutQuint');
+    $('#hud').animate({
+      height: height + 'px',
+      opacity: 1
+    },
+    250,
+    'easeOutQuint');
+  },
   addBlock: function(data) {
     board.blocks.push(data);
+    board.dims.x = Math.max(board.dims.x, data.pos.x + data.dims.x);
+    board.dims.y = Math.max(board.dims.y, data.pos.y + data.dims.y);
+    $('#board').animate({
+      width: (board.dims.x * 36 + Math.max(0, board.dims.x - 1) * 4) + 'px',
+      height: (board.dims.y * 36 + Math.max(0, board.dims.y - 1) * 4) + 'px'
+    },
+    250,
+    'easeOutQuint');
     $('#board').append('<div id="block_' + data.id + '" class="block inactive" style="left: ' + (data.pos.x * 40) + 'px; top: ' + (data.pos.y * 40) + 'px; width: ' + (data.dims.x * 36 + Math.max(0, data.dims.x - 1) * 4) + 'px; height: ' + (data.dims.y * 36 + Math.max(0, data.dims.y - 1) * 4) + 'px;"><div class="progress"></div><div class="label"><div class="value">0</div><div class="percent">%</div></div>');
     if (data.active)
       board.enableBlock(data.id);
     $('#block_' + data.id).click(function() {
       var id = $(this).attr('id').split('_')[1];
       socket.emit('click-block', id);
+    });
+    $('#block_' + data.id).hover(function() {
+      var id = $(this).attr('id').split('_')[1];
+      if ($(this).hasClass('inactive'))
+        return;
+      $(this).stop().animate({
+        borderColor: board.blocks[id].progress == 100 ? '#a9a9a9' : '#fff'
+      },
+      100,
+      'easeOutQuint'
+      );
+    },
+    function() {
+      var id = $(this).attr('id').split('_')[1];
+      if ($(this).hasClass('inactive'))
+        return;
+      $(this).stop().animate({
+        borderColor: board.blocks[id].progress == 100 ? '#606060' : '#888'
+      },
+      100,
+      'easeOutQuint'
+      );
     });
   },
   clickBlock: function(data) {
